@@ -10,6 +10,8 @@ import axios from "axios";
 import StoryList from "./app/components/Story/StoryList";
 import Story from "./app/components/Story/Story";
 import WriteStory from "./app/components/Story/WriteStory";
+import SignUp from "./app/components/SignUp/SignUp";
+import BASE_URI from "./config";
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -63,10 +65,7 @@ export default function App() {
     () => ({
       logIn: async (data) => {
         axios
-          .post(
-            "https://us-central1-golpogatha-3a33c.cloudfunctions.net/webApi/api/v1/users/user/login",
-            data
-          )
+          .post(`${BASE_URI}/users/user/login`, data)
           .then(async function (response) {
             await AsyncStorage.setItem("token", response.data.data.accessToken);
             dispatch({ type: "LOG_IN", token: response.data.data.accessToken });
@@ -77,7 +76,15 @@ export default function App() {
       },
       logOut: () => dispatch({ type: "LOG_OUT" }),
       signUp: async (data) => {
-        dispatch({ type: "SIGN_IN", token: "dummy-auth-token" });
+        axios
+          .post(`${BASE_URI}/users/user/register`, data)
+          .then(async function (response) {
+            await AsyncStorage.setItem("token", response.data.data.accessToken);
+            dispatch({ type: "LOG_IN", token: response.data.data.accessToken });
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
       },
     }),
     []
@@ -88,7 +95,10 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator>
           {state.userToken == null ? (
-            <Stack.Screen name="Login" component={Login} />
+            <>
+              <Stack.Screen name="Login" component={Login} />
+              <Stack.Screen name="SignUp" component={SignUp} />
+            </>
           ) : (
             <>
               <Stack.Screen name="Home" component={StoryList} />

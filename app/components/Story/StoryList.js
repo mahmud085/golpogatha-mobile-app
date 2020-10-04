@@ -12,8 +12,8 @@ import axios from "axios";
 import AsyncStorage from "@react-native-community/async-storage";
 import StoryListItem from "./StoryListItem";
 import { AntDesign } from "@expo/vector-icons";
-
 import { useNavigation } from "@react-navigation/native";
+import BASE_URI from "./../../../config";
 
 const StoryList = () => {
   const [stories, setStories] = useState([]);
@@ -23,14 +23,11 @@ const StoryList = () => {
   useEffect(() => {
     async function fetchData() {
       axios
-        .get(
-          "https://us-central1-golpogatha-3a33c.cloudfunctions.net/webApi/api/v1/stories",
-          {
-            headers: {
-              authorization: "Bearer " + (await AsyncStorage.getItem("token")),
-            },
-          }
-        )
+        .get(`${BASE_URI}/stories`, {
+          headers: {
+            authorization: "Bearer " + (await AsyncStorage.getItem("token")),
+          },
+        })
         .then(function (response) {
           setStories(response.data.data);
           setIsLoading(false);

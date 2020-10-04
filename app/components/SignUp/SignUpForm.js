@@ -7,26 +7,38 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import { AuthContext } from "./../../../App";
+import { AuthContext } from "../../../App";
 import { useNavigation } from "@react-navigation/native";
+import Login from "./../Login/Login";
 
-export default function Loginform() {
+export default function SignUpForm() {
   let passwordInput = useRef(null);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  let emailInput = useRef(null);
 
-  const { logIn } = React.useContext(AuthContext);
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { signUp } = React.useContext(AuthContext);
   const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
       <TextInput
         style={styles.input}
-        placeholder="Username or Email"
+        placeholder="Username"
         placeholderTextColor="rgba(255,255,255,0.7)"
         returnKeyType="next"
-        onSubmitEditing={() => passwordInput.focus()}
+        onSubmitEditing={() => emailInput.focus()}
         onChangeText={(username) => setUsername(username)}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Email"
+        placeholderTextColor="rgba(255,255,255,0.7)"
+        returnKeyType="next"
+        ref={(input) => (emailInput = input)}
+        onSubmitEditing={() => passwordInput.focus()}
+        onChangeText={(email) => setEmail(email)}
       />
       <TextInput
         style={styles.input}
@@ -39,17 +51,16 @@ export default function Loginform() {
       />
       <TouchableOpacity
         style={styles.buttonContainer}
-        onPress={() => logIn({ email: username, password: password })}
+        onPress={() => signUp({ email: email, password: password })}
       >
-        <Text style={styles.buttonText}>Login</Text>
+        <Text style={styles.buttonText}>Sign Up</Text>
       </TouchableOpacity>
-
       <TouchableOpacity
-        style={styles.signUpArea}
-        onPress={() => navigation.navigate("SignUp")}
+        style={styles.signInArea}
+        onPress={() => navigation.navigate("Login")}
       >
-        <Text style={styles.signUpText}>Don't have an account yet? </Text>
-        <Text style={[styles.signUpText, styles.signUpLink]}>SIGN UP</Text>
+        <Text style={styles.signInText}>Don't have an account yet? </Text>
+        <Text style={[styles.signInText, styles.signInLink]}>SIGN IN</Text>
       </TouchableOpacity>
     </View>
   );
@@ -58,7 +69,7 @@ export default function Loginform() {
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-    marginBottom: 40,
+    marginBottom: 20,
   },
   input: {
     height: 40,
@@ -76,18 +87,18 @@ const styles = StyleSheet.create({
     color: "#FFF",
     fontWeight: "700",
   },
-  signUpArea: {
+  signInArea: {
     flex: 1,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     marginTop: 10,
   },
-  signUpText: {
+  signInText: {
     marginTop: 10,
     color: "white",
   },
-  signUpLink: {
+  signInLink: {
     textDecorationLine: "underline",
   },
 });
