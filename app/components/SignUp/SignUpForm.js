@@ -73,7 +73,9 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    backgroundColor: "rgba(255,255,255,0.2)",
+    backgroundColor: "#444",
+    opacity: 0.8,
+    borderRadius: 5,
     color: "#FFF",
     paddingHorizontal: 10,
     marginBottom: 20,
@@ -81,6 +83,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     backgroundColor: "#2980b9",
     paddingVertical: 15,
+    borderRadius: 5,
   },
   buttonText: {
     textAlign: "center",
@@ -88,7 +91,6 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   signInArea: {
-    flex: 1,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
@@ -96,7 +98,7 @@ const styles = StyleSheet.create({
   },
   signInText: {
     marginTop: 10,
-    color: "white",
+    color: "black",
   },
   signInLink: {
     textDecorationLine: "underline",

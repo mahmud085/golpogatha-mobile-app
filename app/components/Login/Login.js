@@ -19,9 +19,11 @@ export default function Login({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#3498db",
+    backgroundColor: "#fff",
   },
-  logo: {},
+  logo: {
+    marginLeft: 20,
+  },
   logoContainer: {
     width: "100%",
     alignItems: "center",
@@ -30,7 +32,7 @@ const styles = StyleSheet.create({
   },
   formContainer: {},
   title: {
-    color: "white",
+    color: "black",
     marginTop: 10,
     textAlign: "center",
     opacity: 0.8,
