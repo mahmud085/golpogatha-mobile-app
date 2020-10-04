@@ -6,32 +6,15 @@ import {
   Text,
   TouchableOpacity,
 } from "react-native";
-import axios from "axios";
-import { useNavigation } from "@react-navigation/native";
+
+import { AuthContext } from "./../../../App";
 
 export default function Loginform() {
   let passwordInput = useRef(null);
-  const navigation = useNavigation();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const login = () => {
-    axios
-      .post(
-        "https://us-central1-golpogatha-3a33c.cloudfunctions.net/webApi/api/v1/users/user/login",
-        {
-          email: username,
-          password: password,
-        }
-      )
-      .then(function (response) {
-        if (response.data.success === true)
-          navigation.navigate("Profile", { name: "Jane" });
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  };
+  const { logIn } = React.useContext(AuthContext);
 
   return (
     <View style={styles.container}>
@@ -52,7 +35,10 @@ export default function Loginform() {
         secureTextEntry
         onChangeText={(password) => setPassword(password)}
       />
-      <TouchableOpacity style={styles.buttonContainer} onPress={login}>
+      <TouchableOpacity
+        style={styles.buttonContainer}
+        onPress={() => logIn({ email: username, password: password })}
+      >
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
     </View>
