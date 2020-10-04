@@ -9,6 +9,7 @@ export const AuthContext = React.createContext();
 import axios from "axios";
 import StoryList from "./app/components/Story/StoryList";
 import Story from "./app/components/Story/Story";
+import WriteStory from "./app/components/Story/WriteStory";
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -92,6 +93,7 @@ export default function App() {
             <>
               <Stack.Screen name="Home" component={StoryList} />
               <Stack.Screen name="Story" component={Story} />
+              <Stack.Screen name="WriteStory" component={WriteStory} />
             </>
           )}
         </Stack.Navigator>

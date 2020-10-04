@@ -1,15 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { Button, Text, View, FlatList } from "react-native";
+import {
+  Button,
+  StyleSheet,
+  View,
+  FlatList,
+  ActivityIndicator,
+  Animated,
+  TouchableWithoutFeedback,
+} from "react-native";
 import axios from "axios";
 import AsyncStorage from "@react-native-community/async-storage";
 import StoryListItem from "./StoryListItem";
+import { AntDesign } from "@expo/vector-icons";
 
-const _getStorageValue = async () => {
-  var value = await AsyncStorage.getItem("token");
-  return value;
-};
+import { useNavigation } from "@react-navigation/native";
+
 const StoryList = () => {
   const [stories, setStories] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const navigation = useNavigation();
+
   useEffect(() => {
     async function fetchData() {
       axios
@@ -22,8 +32,8 @@ const StoryList = () => {
           }
         )
         .then(function (response) {
-          console.log("stories", response.data);
           setStories(response.data.data);
+          setIsLoading(false);
         })
         .catch(function (error) {
           console.log(error);
@@ -32,15 +42,44 @@ const StoryList = () => {
     fetchData();
   }, []);
 
-  return (
-    <View>
+  return isLoading ? (
+    <ActivityIndicator size="large" />
+  ) : (
+    <View style={styles.container}>
       <FlatList
         data={stories}
-        renderItem={({item}) => <StoryListItem item={item} />}
+        renderItem={({ item }) => <StoryListItem item={item} />}
         keyExtractor={(item, index) => item.id}
       />
+      <TouchableWithoutFeedback
+        onPress={() => navigation.navigate("WriteStory")}
+      >
+        <Animated.View style={styles.button}>
+          <AntDesign name="plus" size={30} color="#fff" />
+        </Animated.View>
+      </TouchableWithoutFeedback>
     </View>
   );
 };
 
+const styles = StyleSheet.create({
+  container: {},
+  button: {
+    width: 60,
+    height: 60,
+    borderRadius: 60 / 2,
+    alignItems: "center",
+    justifyContent: "center",
+    shadowRadius: 10,
+    shadowColor: "#F02A4B",
+    backgroundColor: "#F02A4B",
+    opacity: 0.8,
+    shadowOpacity: 0.3,
+    alignSelf: "flex-end",
+    position: "absolute",
+    bottom: 35,
+    right: 10,
+    zIndex: 100,
+  },
+});
 export default StoryList;

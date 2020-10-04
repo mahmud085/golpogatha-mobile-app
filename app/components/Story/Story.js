@@ -1,13 +1,13 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, ScrollView } from "react-native";
 
 export default function Story({ route }) {
   const { story } = route.params;
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Text style={styles.title}>{story.title}</Text>
       <Text style={styles.content}>{story.content}</Text>
-    </View>
+    </ScrollView>
   );
 }
 
