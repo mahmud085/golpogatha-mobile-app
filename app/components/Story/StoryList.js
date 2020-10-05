@@ -18,26 +18,35 @@ import BASE_URI from "./../../../config";
 const StoryList = () => {
   const [stories, setStories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const navigation = useNavigation();
 
+  const navigation = useNavigation();
+  async function fetchData() {
+    axios
+      .get(`${BASE_URI}/stories`, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          authorization: "Bearer " + (await AsyncStorage.getItem("token")),
+        },
+      })
+      .then(function (response) {
+        setStories(response.data.data);
+        setIsLoading(false);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
   useEffect(() => {
-    async function fetchData() {
-      axios
-        .get(`${BASE_URI}/stories`, {
-          headers: {
-            authorization: "Bearer " + (await AsyncStorage.getItem("token")),
-          },
-        })
-        .then(function (response) {
-          setStories(response.data.data);
-          setIsLoading(false);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    }
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      fetchData();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   return isLoading ? (
     <ActivityIndicator size="large" />
@@ -75,7 +84,7 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
     position: "absolute",
     bottom: 35,
-    right: 10,
+    right: 20,
     zIndex: 100,
   },
 });
