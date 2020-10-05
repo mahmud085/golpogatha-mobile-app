@@ -59,7 +59,7 @@ export default function SignUpForm() {
         style={styles.signInArea}
         onPress={() => navigation.navigate("Login")}
       >
-        <Text style={styles.signInText}>Don't have an account yet? </Text>
+        <Text style={styles.signInText}>Already registered? </Text>
         <Text style={[styles.signInText, styles.signInLink]}>SIGN IN</Text>
       </TouchableOpacity>
     </View>

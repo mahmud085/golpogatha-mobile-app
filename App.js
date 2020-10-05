@@ -45,21 +45,21 @@ export default function App() {
     }
   );
 
-  React.useEffect(() => {
-    // Fetch the token from storage then navigate to our appropriate place
-    const bootstrapAsync = async () => {
-      let accessToken;
+  // React.useEffect(() => {
+  //   // Fetch the token from storage then navigate to our appropriate place
+  //   const bootstrapAsync = async () => {
+  //     let accessToken;
 
-      try {
-        accessToken = await AsyncStorage.getItem("token");
-        dispatch({ type: "RESTORE_TOKEN", token: accessToken });
-      } catch (e) {
-        // Restoring token failed
-      }
-    };
+  //     try {
+  //       accessToken = await AsyncStorage.getItem("token");
+  //       dispatch({ type: "RESTORE_TOKEN", token: accessToken });
+  //     } catch (e) {
+  //       // Restoring token failed
+  //     }
+  //   };
 
-    bootstrapAsync();
-  }, []);
+  //   bootstrapAsync();
+  // }, []);
 
   const authContext = React.useMemo(
     () => ({
