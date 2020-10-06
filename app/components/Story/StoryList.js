@@ -58,7 +58,7 @@ const StoryList = () => {
         keyExtractor={(item, index) => item.id}
       />
       <TouchableWithoutFeedback
-        onPress={() => navigation.navigate("WriteStory")}
+        onPress={() => navigation.navigate("Write Story")}
       >
         <Animated.View style={styles.button}>
           <AntDesign name="plus" size={30} color="#fff" />

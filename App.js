@@ -1,18 +1,22 @@
-import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import Login from "./app/components/Login/Login";
+import axios from "axios";
+import AsyncStorage from "@react-native-community/async-storage";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import AsyncStorage from "@react-native-community/async-storage";
-export const AuthContext = React.createContext();
-import axios from "axios";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import Constants from "expo-constants";
+
 import StoryList from "./app/components/Story/StoryList";
 import Story from "./app/components/Story/Story";
 import WriteStory from "./app/components/Story/WriteStory";
+import Login from "./app/components/Login/Login";
 import SignUp from "./app/components/SignUp/SignUp";
 import BASE_URI from "./config";
+
 const Stack = createStackNavigator();
+const Drawer = createDrawerNavigator();
+
+export const AuthContext = React.createContext();
 
 export default function App() {
   const [state, dispatch] = React.useReducer(
@@ -89,24 +93,56 @@ export default function App() {
     }),
     []
   );
+  const screenOptionStyle = {
+    headerStyle: {
+      backgroundColor: "#2F95D6",
+      marginTop: Platform.OS === "ios" ? 0 : Constants.statusBarHeight,
+    },
+    headerTintColor: "white",
+    headerTitleAlign: "center",
+  };
+  const SigninSignupStackNavigator = () => {
+    return (
+      <Stack.Navigator screenOptions={screenOptionStyle}>
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{ title: "Sign In" }}
+        />
+        <Stack.Screen
+          name="SignUp"
+          component={SignUp}
+          options={{ title: "Sign Up" }}
+        />
+      </Stack.Navigator>
+    );
+  };
+
+  const StoriesStackNavigator = () => {
+    return (
+      <Stack.Navigator screenOptions={screenOptionStyle}>
+        <Stack.Screen
+          name="Home"
+          component={StoryList}
+          options={{ title: "Stories" }}
+        />
+        <Stack.Screen name="Story" component={Story} />
+        <Stack.Screen name="Write Story" component={WriteStory} />
+      </Stack.Navigator>
+    );
+  };
 
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
-        <Stack.Navigator>
-          {state.userToken == null ? (
-            <>
-              <Stack.Screen name="Login" component={Login} />
-              <Stack.Screen name="SignUp" component={SignUp} />
-            </>
-          ) : (
-            <>
-              <Stack.Screen name="Home" component={StoryList} />
-              <Stack.Screen name="Story" component={Story} />
-              <Stack.Screen name="WriteStory" component={WriteStory} />
-            </>
-          )}
-        </Stack.Navigator>
+        {state.userToken == null ? (
+          <SigninSignupStackNavigator />
+        ) : (
+          <Drawer.Navigator>
+            <Drawer.Screen name="Stories" component={StoriesStackNavigator} />
+            <Drawer.Screen name="Write Story" component={WriteStory} />
+          </Drawer.Navigator>
+        )}
       </NavigationContainer>
     </AuthContext.Provider>
   );
