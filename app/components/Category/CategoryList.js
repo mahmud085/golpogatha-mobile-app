@@ -10,30 +10,28 @@ import {
 } from "react-native";
 import axios from "axios";
 import AsyncStorage from "@react-native-community/async-storage";
-import StoryListItem from "./StoryListItem";
-import { AntDesign } from "@expo/vector-icons";
+
 import { useNavigation } from "@react-navigation/native";
-import BASE_URI from "./../../../config";
+import BASE_URI from "../../../config";
+import CategoryListItem from "./CategoryListItem";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const StoryList = ({category}) => {
-  const [stories, setStories] = useState([]);
+const CategoryList = () => {
+  const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const navigation = useNavigation();
-  async function fetchData() {
+  async function fetchCategories() {
     axios
-      .get(`${BASE_URI}/stories`, {
+      .get(`${BASE_URI}/stories/category/all`, {
         headers: {
           "Access-Control-Allow-Origin": "*",
           authorization: "Bearer " + (await AsyncStorage.getItem("token")),
         },
       })
       .then(function (response) {
-        if(category !== undefined)
-        setStories(response.data.data.filter(story => story.category.toLowerCase() === category.toLowerCase()));
-        else
-        setStories(response.data.data);
+        // console.log("Categories ", response.data.data);
+        setCategories(response.data.data);
         setIsLoading(false);
       })
       .catch(function (error) {
@@ -41,12 +39,12 @@ const StoryList = ({category}) => {
       });
   }
   useEffect(() => {
-    fetchData();
+    fetchCategories();
   }, []);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
-      fetchData();
+      fetchCategories();
     });
 
     return unsubscribe;
@@ -55,25 +53,22 @@ const StoryList = ({category}) => {
   return isLoading ? (
     <ActivityIndicator size="large" />
   ) : (
-    <View style={styles.container}>
       <FlatList
-        data={stories}
-        renderItem={({ item }) => <StoryListItem item={item} />}
-        keyExtractor={(item, index) => item.id}
+        style={styles.itemContainer}
+        data={categories}
+        renderItem={({ item }) => <CategoryListItem item={item} />}
+        keyExtractor={(item, index) => index}
+        numColumns={2}
       />
-      <TouchableWithoutFeedback
-        onPress={() => navigation.navigate("Write Story")}
-      >
-        <Animated.View style={styles.button}>
-          <AntDesign name="plus" size={30} color="#fff" />
-        </Animated.View>
-      </TouchableWithoutFeedback>
-    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    flex: 1
+},
+itemContainer: {    
+},
   button: {
     width: 60,
     height: 60,
@@ -92,4 +87,4 @@ const styles = StyleSheet.create({
     zIndex: 100,
   },
 });
-export default StoryList;
+export default CategoryList;
