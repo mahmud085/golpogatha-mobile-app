@@ -51,7 +51,9 @@ const CategoryList = () => {
   }, [navigation]);
 
   return isLoading ? (
-    <ActivityIndicator size="large" />
+    <View style={{flex: 1, justifyContent: "center"}}>
+      <ActivityIndicator size="large" color="#F44336" />
+    </View>
   ) : (
       <FlatList
         style={styles.itemContainer}
@@ -67,7 +69,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
 },
-itemContainer: {    
+itemContainer: {   
+  margin:5,
 },
   button: {
     width: 60,

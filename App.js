@@ -2,7 +2,10 @@ import React from "react";
 import axios from "axios";
 import AsyncStorage from "@react-native-community/async-storage";
 import { NavigationContainer } from "@react-navigation/native";
-
+import {
+  View,
+  ActivityIndicator,
+} from "react-native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import StoryList from "./app/components/Story/StoryList";
@@ -36,12 +39,14 @@ export default function App() {
           return {
             ...prevState,
             isLogout: false,
+            isLoading: false,
             userToken: action.token,
           };
         case "LOG_OUT":
           return {
             ...prevState,
             isLogout: true,
+            isLoading: false,
             userToken: null,
           };
       }
@@ -105,10 +110,17 @@ export default function App() {
           {state.userToken == null ? (
             <SigninSignupStackNavigator />
           ) : (
+            
+              state.isLoading == true ? (
+                <View style={{flex: 1, justifyContent: "center"}}>
+                  <ActivityIndicator size="large" color="#F44336"/>
+                </View>
+              ) : (
             <Drawer.Navigator>
               <Drawer.Screen name="Home" component={BottomTabNavigator} />
               <Drawer.Screen name="Stories" component={StoriesStackNavigator} />
-            </Drawer.Navigator>
+            </Drawer.Navigator>)
+            
           )}
         </NavigationContainer>
       </AuthContext.Provider>

@@ -49,7 +49,7 @@ const StoriesStackNavigator = ({route}) => {
         options={({ navigation }) => ({
           title: "Stories",
           headerLeft: () => (
-            <Icon name="menu" size={35} onPress={() => navigation.toggleDrawer()} />
+            <Icon style={{marginLeft: 10}} name="menu" size={35} onPress={() => navigation.toggleDrawer()} />
           ),
         })}
       />
@@ -69,7 +69,7 @@ const CategoriesStackNavigator = () => {
         options={({ navigation }) => ({
           title: "Categories",
           headerLeft: () => (
-            <Icon name="menu" size={35} onPress={() => navigation.toggleDrawer()} />
+            <Icon style={{marginLeft: 10}} name="menu" size={35} onPress={() => navigation.toggleDrawer()} />
           ),
         })}
       />

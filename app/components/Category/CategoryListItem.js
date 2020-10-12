@@ -15,11 +15,17 @@ const CategoryListItem = ({ item }) => {
 const styles = StyleSheet.create({
   container: {
     margin:5,
-    width: width / 2 - 10,
-    height: 150,
+    width: width / 2 - 15,
+    height: 250,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: "#ffcccc",
+    backgroundColor: "#fff",
+    borderRadius: width * 0.05,
+    elevation: 5,
+    shadowOpacity: 0.75,
+    shadowRadius: 5,
+    shadowColor: 'red',
+    shadowOffset: { height: 1, width: 1 },
   },
 });
 export default CategoryListItem;
